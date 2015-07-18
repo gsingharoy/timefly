@@ -1,7 +1,9 @@
 require 'spec_helper'
 
 describe Timefly do
-
+  before do
+    allow(Time).to receive(:now).and_return Time.new(2015,6,3)
+  end
   describe '#process' do
     context 'origin_time is Date' do
       it 'retains the origin_time' do
@@ -41,6 +43,22 @@ describe Timefly do
     context 'origin_time is Float' do
       it 'fails' do
         expect{ Timefly.new(1.0) }.to raise_error
+      end
+    end
+  end
+
+  describe '#years_from_origin_time' do
+    { [1987, 8, 2] => 27,
+      [1987, 6, 2] => 27,
+      [1987, 6, 3] => 28 }.each do |dob_arr, age|
+      context "when origin_time is Time.new(#{dob_arr[0]}, #{dob_arr[1]}, #{dob_arr[2]})" do
+        it "returns #{age}" do
+          dob = Time.new(dob_arr[0], dob_arr[1], dob_arr[2])
+          timefly = Timefly.new(dob)
+          expect(
+            timefly.send(:years_from_origin_time)
+          ).to eq age
+        end
       end
     end
   end
