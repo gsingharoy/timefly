@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name        = 'timefly'
-  spec.version     = '0.0.0'
+  spec.version     = '0.0.1'
   spec.date        = Time.now.strftime('%Y-%m-%d')
   spec.summary     = "Timefly"
   spec.description = "A simple library which makes it easier to get time related data, eg, age from Date of birth, elapsed time in beautiful format, etc."
