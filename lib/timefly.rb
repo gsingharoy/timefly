@@ -57,35 +57,35 @@ class Timefly
 
   # This method gets the months difference since the origin_time month
   def months_diff_from_origin_time_month
-    dob_month = dob.strftime('%m').to_i
+    origin_time_month = origin_time.strftime('%m').to_i
     now_month = Time.now.strftime('%m').to_i
-    if dob_month == now_month
+    if origin_time_month == now_month
       0
-    elsif dob_month > now_month
-      12-(dob_month-now_month).abs
+    elsif origin_time_month > now_month
+      12-(origin_time_month-now_month).abs
     else
-      now_month-dob_month
+      now_month-origin_time_month
     end
   end
 
   # This method gets the years elapsed since origin_time
   def years_from_origin_time
-    dob_years = origin_time.strftime('%Y').to_i
+    origin_time_years = origin_time.strftime('%Y').to_i
     now_years = Time.now.strftime('%Y').to_i
-    dob_month = origin_time.strftime('%m').to_i
+    origin_time_month = origin_time.strftime('%m').to_i
     now_month = Time.now.strftime('%m').to_i
-    if dob_month == now_month
+    if origin_time_month == now_month
       dob_date = origin_time.strftime('%d').to_i
       now_date = Time.now.strftime('%d').to_i
       if now_date > dob_date
-        now_years - dob_years - 1
+        now_years - origin_time_years - 1
       else
-        now_years - dob_years
+        now_years - origin_time_years
       end
-    elsif dob_month > now_month
-      now_years - dob_years - 1
+    elsif origin_time_month > now_month
+      now_years - origin_time_years - 1
     else
-      now_years - dob_years
+      now_years - origin_time_years
     end
   end
 end

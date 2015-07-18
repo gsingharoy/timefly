@@ -62,4 +62,22 @@ describe Timefly do
       end
     end
   end
+
+  describe '::months_diff_from_origin_time_month' do
+    { [1987, 8, 2] => 10,
+      [1987, 6, 2] => 0,
+      [1987, 6, 3] => 0,
+      [1987, 5, 3] => 1,
+      [1987, 7, 1] => 11 }.each do |dob_arr, months|
+      context "when dob is Time.new(#{dob_arr[0]}, #{dob_arr[1]}, #{dob_arr[2]})" do
+        it "returns #{months}" do
+          dob = Time.new(dob_arr[0], dob_arr[1], dob_arr[2])
+          timefly = Timefly.new(dob)
+          expect(
+            timefly.send(:months_diff_from_origin_time_month)
+          ).to eq months
+        end
+      end
+    end
+  end
 end
