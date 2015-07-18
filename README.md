@@ -1,5 +1,6 @@
 # Timefly
 
+[![Gem Version](https://badge.fury.io/rb/timefly.svg)](http://badge.fury.io/rb/timefly)[![Build Status](https://travis-ci.org/aaalo/timefly.svg?branch=master)](https://travis-ci.org/aaalo/timefly)
 
 A simple library which makes it easier to get time related data, eg, age from Date of birth, elapsed time in beautiful format, etc.
 
