@@ -38,6 +38,8 @@ class Timefly
   def process
     if origin_time.is_a? String
       convert_string_origin_time
+    elsif !origin_time.is_a?(Time) && !origin_time.is_a?(Date)
+      fail("#{origin_time.class.name} is not a supported origin_time")
     end
   end
 
@@ -50,7 +52,7 @@ class Timefly
       separator = '-'
     end
     dob_arr = origin_time.split(separator).map{ |d| d.to_i }
-    origin_time = Time.new(dob_arr[0], dob_arr[1], dob_arr[2])
+    self.origin_time = Time.new(dob_arr[0], dob_arr[1], dob_arr[2])
   end
 
   # This method gets the months difference since the origin_time month
