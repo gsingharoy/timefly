@@ -47,6 +47,34 @@ describe Timefly do
     end
   end
 
+  describe '#age' do
+    context 'when origin_time is Time' do
+      it 'returns the correct age' do
+        expect(
+          Timefly.new(Time.new(1987,8,2)).age
+        ).to eq 27
+      end
+    end
+    context 'when origin_time is String' do
+      ['-', '/', '.'].each do |separator|
+        context "dob is separated by #{separator}" do
+          it 'raises error' do
+            expect(
+              Timefly.new("1987#{separator}08#{separator}02").age
+            ).to eq 27
+          end
+        end
+      end
+    end
+    context 'when format is sent in options' do
+      it 'returns years and months in the format' do
+        expect(
+          Timefly.new('1987.08.02').age({ format: '%y years, %m months' })
+        ).to eq '27 years, 10 months'
+      end
+    end
+  end
+
   describe '#years_from_origin_time' do
     { [1987, 8, 2] => 27,
       [1987, 6, 2] => 27,
