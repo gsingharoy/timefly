@@ -2,6 +2,9 @@ class Timefly
 
   attr_accessor :origin_time
 
+  # initialize with either String, Time or Date instance
+  # Arguments:
+  #   origin_time: (String/Time/Date)
   def initialize(origin_time)
     self.origin_time = origin_time
     process
@@ -11,15 +14,14 @@ class Timefly
   #
   # Example:
   #   >> dob = Time.new(1987,8,2)
-  #   >> TimeCapsule.age(dob)
+  #   >> Timefly.new(dob).age
   #   => 27
-  #   >> TimeCapsule.age('1987.08.02') # dob can be of format YYYY.MM.DD, YYYY-MM-DD and YYYY/MM/DD
+  #   >> Timefly.new('1987.08.02').age # dob can be of format YYYY.MM.DD, YYYY-MM-DD and YYYY/MM/DD
   #   => 27
-  #   >> TimeCapsule.age('1987.08.02', { format: '%y years, %m months' })
+  #   >> Timefly.new('1987.08.02').age({ format: '%y years, %m months' })
   #   => 27 years, 10 months
   #
   # Arguments:
-  #   dob: (Time/String)
   #   options: (Hash) { format  :(String) }
   #                             eg, '%y years, %m months'. %y will give years, and %m will give months
   def age(options = {})
@@ -45,6 +47,7 @@ class Timefly
 
   #convert dob to Time if it is in String
   def convert_string_origin_time
+    #TODO: improve this method
     separator = '.'
     if origin_time.include?('/')
       separator = '/'
