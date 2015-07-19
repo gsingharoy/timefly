@@ -48,6 +48,8 @@ class Timefly
       elapsed_time_in_hours
     elsif time_elapsed_in_days?
       elapsed_time_in_days
+    elsif time_elapsed_in_weeks?
+      elapsed_time_in_weeks
     elsif time_elapsed_in_months?
       elapsed_time_in_months
     else
@@ -132,7 +134,11 @@ class Timefly
   end
 
   def time_elapsed_in_days?
-    (time_diff_in_secs / (60 * 60 * 24)) < 30
+    (time_diff_in_secs / (60 * 60 * 24)) < 7
+  end
+
+  def time_elapsed_in_weeks?
+    (time_diff_in_secs / (60 * 60 * 24 * 30)) < 1 && (time_diff_in_secs / (60 * 60 * 24 )) >= 7
   end
 
   def time_elapsed_in_months?
@@ -156,6 +162,11 @@ class Timefly
   def elapsed_time_in_days
     time_diff = time_diff_in_secs / (60 * 60 * 24)
     elapsed_time_in_unit(time_diff, 'day')
+  end
+
+  def elapsed_time_in_weeks
+    time_diff = time_diff_in_secs / (60 * 60 * 24 * 7)
+    elapsed_time_in_unit(time_diff, 'week')
   end
 
   def elapsed_time_in_months

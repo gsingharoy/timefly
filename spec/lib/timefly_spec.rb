@@ -218,6 +218,24 @@ describe Timefly do
       end
     end
 
+    describe '#time_elapsed_in_weeks?' do
+      origin_time = Time.new(2015, 6, 15, 12, 12, 30)
+      {
+        Time.new(2015, 6, 8, 12, 12, 31) => false,
+        Time.new(2015, 6, 8, 12, 11, 29) => true,
+        Time.new(2015, 5, 15, 12, 12, 30) => false,
+      }.each do |time_now, result|
+        context "Time.now is #{time_now} and origin_time is #{origin_time}" do
+          it "returns #{result}" do
+            allow(Time).to receive(:now).and_return time_now
+            expect(
+              Timefly.new(origin_time).send(:time_elapsed_in_weeks?)
+            ).to eq result
+          end
+        end
+      end
+    end
+
     describe '#time_elapsed_in_months?' do
       origin_time = Time.new(2015, 6, 15, 12, 12, 30)
       {
@@ -239,18 +257,21 @@ describe Timefly do
     describe '#time_elapsed' do
       origin_time = Time.new(2015, 6, 15, 12, 12, 30)
       {
-        Time.new(2015, 6, 15, 12, 12, 31) => 'a few seconds ago',
-        Time.new(2015, 6, 15, 12, 11, 31) => 'a few seconds ago',
-        Time.new(2015, 6, 15, 12, 11, 30) => '1 minute ago',
-        Time.new(2015, 6, 15, 12, 10, 30) => '2 minutes ago',
-        Time.new(2015, 6, 15, 11, 12, 30) => '1 hour ago',
-        Time.new(2015, 6, 15, 10, 12, 30) => '2 hours ago',
-        Time.new(2015, 6, 14, 12, 12, 30) => '1 day ago',
-        Time.new(2015, 6, 13, 12, 12, 30) => '2 days ago',
-        Time.new(2015, 5, 15, 12, 12, 30) => '1 month ago',
-        Time.new(2015, 4, 15, 12, 12, 30) => '2 months ago',
-        Time.new(2014, 6, 15, 12, 12, 30) => '1 year ago',
-        Time.new(2013, 6, 15, 12, 12, 30) => '2 years ago'
+        Time.new(2015, 6, 15, 12, 12, 31)   => 'a few seconds ago',
+        Time.new(2015, 6, 15, 12, 11, 31)   => 'a few seconds ago',
+        Time.new(2015, 6, 15, 12, 11, 30)   => '1 minute ago',
+        Time.new(2015, 6, 15, 12, 10, 30)   => '2 minutes ago',
+        Time.new(2015, 6, 15, 11, 12, 30)   => '1 hour ago',
+        Time.new(2015, 6, 15, 10, 12, 30)   => '2 hours ago',
+        Time.new(2015, 6, 14, 12, 12, 30)   => '1 day ago',
+        Time.new(2015, 6, 13, 12, 12, 30)   => '2 days ago',
+        Time.new(2015, 6, 9, 12, 12, 30)    => '6 days ago',
+        Time.new(2015, 6, 8, 12, 12, 30)    => '1 week ago',
+        Time.new(2015, 5, 17, 12, 12, 30)   => '4 weeks ago',
+        Time.new(2015, 5, 15, 12, 12, 30)   => '1 month ago',
+        Time.new(2015, 4, 15, 12, 12, 30)   => '2 months ago',
+        Time.new(2014, 6, 15, 12, 12, 30)   => '1 year ago',
+        Time.new(2013, 6, 15, 12, 12, 30)   => '2 years ago'
       }.each do |time_now, response|
         context "Time.now is #{time_now} and origin_time is #{origin_time}" do
           it "returns #{response}" do
