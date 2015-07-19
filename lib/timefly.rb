@@ -35,8 +35,22 @@ class Timefly
   end
 
   # returns the time elapsed in a readable format
+  #
+  # Example:
+  #   >> Timefly.new(origin_time).time_elapsed
+  #   => '4 hours ago'
   def time_elapsed
-
+    if time_elapsed_in_seconds?
+      time_elapsed_in_seconds
+    elsif time_elapsed_in_minutes?
+      time_elapsed_in_minutes
+    elsif time_elapsed_in_hours?
+      time_elapsed_in_hours
+    elsif time_elapsed_in_days?
+      time_elapsed_in_days
+    elsif time_elapsed_in_months?
+      time_elapsed_in_months
+    end
   end
 
   private
@@ -97,6 +111,8 @@ class Timefly
     end
   end
 
+  # START time_elapsed helper methods --------------------------------
+
   def time_diff_in_secs
     @time_diff_in_secs ||= (Time.now - origin_time).to_i.abs
   end
@@ -106,19 +122,54 @@ class Timefly
   end
 
   def time_elapsed_in_minutes?
-    (time_diff_in_secs/60) < 60
+    (time_diff_in_secs / 60) < 60
   end
 
   def time_elapsed_in_hours?
-    (time_diff_in_secs/(60*60)) < 24
+    (time_diff_in_secs / (60 * 60)) < 24
   end
 
   def time_elapsed_in_days?
-    (time_diff_in_secs/(60*60*24)) < 30
+    (time_diff_in_secs / (60 * 60 * 24)) < 30
   end
 
   def time_elapsed_in_months?
-    (time_diff_in_secs/(60*60*24*30)) < 12
+    (time_diff_in_secs / (60 * 60 * 24 * 30)) < 12
   end
 
+  def time_elapsed_in_seconds
+    'a few seconds ago'
+  end
+
+  def time_elapsed_in_minutes
+    time_diff = time_diff_in_secs / 60
+    time_elapsed_in_unit(time_diff, 'minutes')
+  end
+
+  def time_elapsed_in_hours
+    time_diff = time_diff_in_secs / (60 * 60)
+    time_elapsed_in_unit(time_diff, 'hour')
+  end
+
+  def time_elapsed_in_days
+    time_diff = time_diff_in_secs / (60 * 60 * 24)
+    time_elapsed_in_unit(time_diff, 'day')
+  end
+
+  def time_elapsed_in_months
+    time_diff = time_diff_in_secs / (60 * 60 * 24 * 30)
+    time_elapsed_in_unit(time_diff, 'month')
+  end
+
+  def time_elapsed_in_years
+    time_diff = time_diff_in_secs / (60 * 60 * 24 * 30 * 12)
+    time_elapsed_in_unit(time_diff, 'year')
+  end
+
+  def time_elapsed_in_unit(time_diff, unit)
+    unit += 's' if time_diff > 1
+    "#{time_diff} #{unit} ago"
+  end
+
+  # END time_elapsed helper methods --------------------------------
 end
