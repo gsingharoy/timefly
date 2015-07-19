@@ -39,17 +39,19 @@ class Timefly
   # Example:
   #   >> Timefly.new(origin_time).time_elapsed
   #   => '4 hours ago'
-  def time_elapsed
+  def elapsed_time
     if time_elapsed_in_seconds?
-      time_elapsed_in_seconds
+      elapsed_time_in_seconds
     elsif time_elapsed_in_minutes?
-      time_elapsed_in_minutes
+      elapsed_time_in_minutes
     elsif time_elapsed_in_hours?
-      time_elapsed_in_hours
+      elapsed_time_in_hours
     elsif time_elapsed_in_days?
-      time_elapsed_in_days
+      elapsed_time_in_days
     elsif time_elapsed_in_months?
-      time_elapsed_in_months
+      elapsed_time_in_months
+    else
+      elapsed_time_in_years
     end
   end
 
@@ -137,36 +139,36 @@ class Timefly
     (time_diff_in_secs / (60 * 60 * 24 * 30)) < 12
   end
 
-  def time_elapsed_in_seconds
+  def elapsed_time_in_seconds
     'a few seconds ago'
   end
 
-  def time_elapsed_in_minutes
+  def elapsed_time_in_minutes
     time_diff = time_diff_in_secs / 60
-    time_elapsed_in_unit(time_diff, 'minutes')
+    elapsed_time_in_unit(time_diff, 'minute')
   end
 
-  def time_elapsed_in_hours
+  def elapsed_time_in_hours
     time_diff = time_diff_in_secs / (60 * 60)
-    time_elapsed_in_unit(time_diff, 'hour')
+    elapsed_time_in_unit(time_diff, 'hour')
   end
 
-  def time_elapsed_in_days
+  def elapsed_time_in_days
     time_diff = time_diff_in_secs / (60 * 60 * 24)
-    time_elapsed_in_unit(time_diff, 'day')
+    elapsed_time_in_unit(time_diff, 'day')
   end
 
-  def time_elapsed_in_months
+  def elapsed_time_in_months
     time_diff = time_diff_in_secs / (60 * 60 * 24 * 30)
-    time_elapsed_in_unit(time_diff, 'month')
+    elapsed_time_in_unit(time_diff, 'month')
   end
 
-  def time_elapsed_in_years
+  def elapsed_time_in_years
     time_diff = time_diff_in_secs / (60 * 60 * 24 * 30 * 12)
-    time_elapsed_in_unit(time_diff, 'year')
+    elapsed_time_in_unit(time_diff, 'year')
   end
 
-  def time_elapsed_in_unit(time_diff, unit)
+  def elapsed_time_in_unit(time_diff, unit)
     unit += 's' if time_diff > 1
     "#{time_diff} #{unit} ago"
   end
