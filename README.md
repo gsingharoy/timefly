@@ -18,7 +18,12 @@ Timefly.new(Time.new(1987, 8, 2))
 #str_origin_time can be String or formats YYYY.MM.DD, YYYY-MM-DD, YYYY/MM/DD
 Timefly.new(str_origin_time)
 ```
-To get the age from origin time
+To get the elapsed time
+```shell
+Timefly.new(origin_time).elapsed_time
+# => 4 hours ago
+```
+To get the age from date of birth
 ```shell
 # dob is the date of birth
 Timefly.new(dob).age
