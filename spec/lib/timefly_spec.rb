@@ -1,10 +1,10 @@
 require 'spec_helper'
 
 describe Timefly do
-  before do
-    allow(Time).to receive(:now).and_return Time.new(2015,6,3)
-  end
   describe '#process' do
+    before do
+      allow(Time).to receive(:now).and_return Time.new(2015,6,3)
+    end
     context 'origin_time is Date' do
       it 'retains the origin_time' do
         origin_date = Date.new(2015, 4, 6)
@@ -48,6 +48,9 @@ describe Timefly do
   end
 
   describe '#age' do
+    before do
+      allow(Time).to receive(:now).and_return Time.new(2015,6,3)
+    end
     context 'when origin_time is Time' do
       it 'returns the correct age' do
         expect(
@@ -76,6 +79,9 @@ describe Timefly do
   end
 
   describe '#years_from_origin_time' do
+    before do
+      allow(Time).to receive(:now).and_return Time.new(2015,6,3)
+    end
     { [1987, 8, 2] => 27,
       [1987, 6, 2] => 27,
       [1987, 6, 3] => 28 }.each do |dob_arr, age|
@@ -91,7 +97,10 @@ describe Timefly do
     end
   end
 
-  describe '::months_diff_from_origin_time_month' do
+  describe '#months_diff_from_origin_time_month' do
+    before do
+      allow(Time).to receive(:now).and_return Time.new(2015,6,3)
+    end
     { [1987, 8, 2] => 10,
       [1987, 6, 2] => 0,
       [1987, 6, 3] => 0,

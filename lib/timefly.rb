@@ -34,6 +34,11 @@ class Timefly
     end
   end
 
+  # returns the time elapsed in a readable format
+  def time_elapsed
+
+  end
+
   private
 
   # This method tries to convert the origin_time to Time
@@ -91,4 +96,29 @@ class Timefly
       now_years - origin_time_years
     end
   end
+
+  def time_diff_in_secs
+    @time_diff_in_secs ||= (Time.now - origin_time).to_i.abs
+  end
+
+  def time_elapsed_in_seconds?
+    time_diff_in_secs < 60
+  end
+
+  def time_elapsed_in_minutes?
+    (time_diff_in_secs/60) < 60
+  end
+
+  def time_elapsed_in_hours?
+    (time_diff_in_secs/(60*60)) < 24
+  end
+
+  def time_elapsed_in_days?
+    (time_diff_in_secs/(60*60*24)) < 30
+  end
+
+  def time_elapsed_in_months?
+    (time_diff_in_secs/(60*60*24*30)) < 12
+  end
+
 end
