@@ -2,6 +2,18 @@ class Timefly
 
   attr_accessor :origin_time
 
+  TIME_UNIT_MAPPER = {
+    second: { short: 's', full: 'second' },
+    minute: { short: 'm', full: 'minute' },
+    hour: { short: 'h', full: 'hour' },
+    day: { short: 'd', full: 'day' },
+    week: { short: 'w', full: 'week' },
+    month: { short: 'mo', full: 'month' },
+    year: { short: 'y', full: 'year' },
+  }
+
+  DEFAULT_FORMAT = '%n %U ago'
+
   # initialize with either String, Time or Date instance
   # Arguments:
   #   origin_time: (String/Time/Date)
@@ -149,47 +161,50 @@ class Timefly
     if options[:format].nil?
       'a few seconds ago'
     else
-      elapsed_time_in_unit(time_diff_in_secs, 'second', options)
+      elapsed_time_in_unit(time_diff_in_secs, :second, options)
     end
   end
 
   def elapsed_time_in_minutes(options = {})
     time_diff = time_diff_in_secs / 60
-    elapsed_time_in_unit(time_diff, 'minute', options)
+    elapsed_time_in_unit(time_diff, :minute, options)
   end
 
   def elapsed_time_in_hours(options = {})
     time_diff = time_diff_in_secs / (60 * 60)
-    elapsed_time_in_unit(time_diff, 'hour', options)
+    elapsed_time_in_unit(time_diff, :hour, options)
   end
 
   def elapsed_time_in_days(options = {})
     time_diff = time_diff_in_secs / (60 * 60 * 24)
-    elapsed_time_in_unit(time_diff, 'day', options)
+    elapsed_time_in_unit(time_diff, :day, options)
   end
 
   def elapsed_time_in_weeks(options = {})
     time_diff = time_diff_in_secs / (60 * 60 * 24 * 7)
-    elapsed_time_in_unit(time_diff, 'week', options)
+    elapsed_time_in_unit(time_diff, :week, options)
   end
 
   def elapsed_time_in_months(options = {})
     time_diff = time_diff_in_secs / (60 * 60 * 24 * 30)
-    elapsed_time_in_unit(time_diff, 'month', options)
+    elapsed_time_in_unit(time_diff, :month, options)
   end
 
   def elapsed_time_in_years(options = {})
     time_diff = time_diff_in_secs / (60 * 60 * 24 * 30 * 12)
-    elapsed_time_in_unit(time_diff, 'year', options)
+    elapsed_time_in_unit(time_diff, :year, options)
   end
 
-  def elapsed_time_in_unit(time_diff, unit, options = proc{ default_options })
-    unit += 's' if time_diff > 1
-    "#{time_diff} #{unit} ago"
-  end
-
-  def default_options
-    {}
+  def elapsed_time_in_unit(time_diff, unit_type, options = {})
+    options[:format] = DEFAULT_FORMAT if options[:format].nil?
+    unit = ''
+    if options[:format].include?('%u')
+      unit = TIME_UNIT_MAPPER[unit_type][:short]
+    elsif options[:format].include?('%U')
+      unit = TIME_UNIT_MAPPER[unit_type][:full]
+      unit += 's' if time_diff > 1
+    end
+    options[:format].gsub(/\%u/i, unit).gsub(/\%n/, time_diff.to_s)
   end
 
   # END time_elapsed helper methods --------------------------------
