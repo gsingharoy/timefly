@@ -39,7 +39,7 @@ class Timefly
   # Example:
   #   >> Timefly.new(origin_time).time_elapsed
   #   => '4 hours ago'
-  def elapsed_time
+  def elapsed_time(options = {})
     if time_elapsed_in_seconds?
       elapsed_time_in_seconds
     elsif time_elapsed_in_minutes?
@@ -145,43 +145,51 @@ class Timefly
     (time_diff_in_secs / (60 * 60 * 24 * 30)) < 12
   end
 
-  def elapsed_time_in_seconds
-    'a few seconds ago'
+  def elapsed_time_in_seconds(options = {})
+    if options[:format].nil?
+      'a few seconds ago'
+    else
+      elapsed_time_in_unit(time_diff_in_secs, 'second', options)
+    end
   end
 
-  def elapsed_time_in_minutes
+  def elapsed_time_in_minutes(options = {})
     time_diff = time_diff_in_secs / 60
-    elapsed_time_in_unit(time_diff, 'minute')
+    elapsed_time_in_unit(time_diff, 'minute', options)
   end
 
-  def elapsed_time_in_hours
+  def elapsed_time_in_hours(options = {})
     time_diff = time_diff_in_secs / (60 * 60)
-    elapsed_time_in_unit(time_diff, 'hour')
+    elapsed_time_in_unit(time_diff, 'hour', options)
   end
 
-  def elapsed_time_in_days
+  def elapsed_time_in_days(options = {})
     time_diff = time_diff_in_secs / (60 * 60 * 24)
-    elapsed_time_in_unit(time_diff, 'day')
+    elapsed_time_in_unit(time_diff, 'day', options)
   end
 
-  def elapsed_time_in_weeks
+  def elapsed_time_in_weeks(options = {})
     time_diff = time_diff_in_secs / (60 * 60 * 24 * 7)
-    elapsed_time_in_unit(time_diff, 'week')
+    elapsed_time_in_unit(time_diff, 'week', options)
   end
 
-  def elapsed_time_in_months
+  def elapsed_time_in_months(options = {})
     time_diff = time_diff_in_secs / (60 * 60 * 24 * 30)
-    elapsed_time_in_unit(time_diff, 'month')
+    elapsed_time_in_unit(time_diff, 'month', options)
   end
 
-  def elapsed_time_in_years
+  def elapsed_time_in_years(options = {})
     time_diff = time_diff_in_secs / (60 * 60 * 24 * 30 * 12)
-    elapsed_time_in_unit(time_diff, 'year')
+    elapsed_time_in_unit(time_diff, 'year', options)
   end
 
-  def elapsed_time_in_unit(time_diff, unit)
+  def elapsed_time_in_unit(time_diff, unit, options = proc{ default_options })
     unit += 's' if time_diff > 1
     "#{time_diff} #{unit} ago"
+  end
+
+  def default_options
+    {}
   end
 
   # END time_elapsed helper methods --------------------------------
