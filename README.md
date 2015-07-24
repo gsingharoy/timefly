@@ -23,6 +23,14 @@ To get the elapsed time
 Timefly.new(origin_time).elapsed_time
 # => 4 hours ago
 ```
+To get a custom format of the elapsed_time
+```shell
+Timefly.new(origin_time).elapsed_time(format: '%n%u')
+# => 4h
+# %n - numeric value of the difference
+# %u - short form of the unit
+# %U - full unit
+```
 To get the age from date of birth
 ```shell
 # dob is the date of birth
