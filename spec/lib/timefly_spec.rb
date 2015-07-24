@@ -256,29 +256,81 @@ describe Timefly do
 
     describe '#time_elapsed' do
       origin_time = Time.new(2015, 6, 15, 12, 12, 30)
-      {
-        Time.new(2015, 6, 15, 12, 12, 31)   => 'a few seconds ago',
-        Time.new(2015, 6, 15, 12, 11, 31)   => 'a few seconds ago',
-        Time.new(2015, 6, 15, 12, 11, 30)   => '1 minute ago',
-        Time.new(2015, 6, 15, 12, 10, 30)   => '2 minutes ago',
-        Time.new(2015, 6, 15, 11, 12, 30)   => '1 hour ago',
-        Time.new(2015, 6, 15, 10, 12, 30)   => '2 hours ago',
-        Time.new(2015, 6, 14, 12, 12, 30)   => '1 day ago',
-        Time.new(2015, 6, 13, 12, 12, 30)   => '2 days ago',
-        Time.new(2015, 6, 9, 12, 12, 30)    => '6 days ago',
-        Time.new(2015, 6, 8, 12, 12, 30)    => '1 week ago',
-        Time.new(2015, 5, 17, 12, 12, 30)   => '4 weeks ago',
-        Time.new(2015, 5, 15, 12, 12, 30)   => '1 month ago',
-        Time.new(2015, 4, 15, 12, 12, 30)   => '2 months ago',
-        Time.new(2014, 6, 15, 12, 12, 30)   => '1 year ago',
-        Time.new(2013, 6, 15, 12, 12, 30)   => '2 years ago'
-      }.each do |time_now, response|
-        context "Time.now is #{time_now} and origin_time is #{origin_time}" do
-          it "returns #{response}" do
-            allow(Time).to receive(:now).and_return time_now
-            expect(
-              Timefly.new(origin_time).elapsed_time
-            ).to eq response
+      context 'no options sent' do
+        {
+          Time.new(2015, 6, 15, 12, 12, 31)   => 'a few seconds ago',
+          Time.new(2015, 6, 15, 12, 11, 31)   => 'a few seconds ago',
+          Time.new(2015, 6, 15, 12, 11, 30)   => '1 minute ago',
+          Time.new(2015, 6, 15, 12, 10, 30)   => '2 minutes ago',
+          Time.new(2015, 6, 15, 11, 12, 30)   => '1 hour ago',
+          Time.new(2015, 6, 15, 10, 12, 30)   => '2 hours ago',
+          Time.new(2015, 6, 14, 12, 12, 30)   => '1 day ago',
+          Time.new(2015, 6, 13, 12, 12, 30)   => '2 days ago',
+          Time.new(2015, 6, 9, 12, 12, 30)    => '6 days ago',
+          Time.new(2015, 6, 8, 12, 12, 30)    => '1 week ago',
+          Time.new(2015, 5, 17, 12, 12, 30)   => '4 weeks ago',
+          Time.new(2015, 5, 15, 12, 12, 30)   => '1 month ago',
+          Time.new(2015, 4, 15, 12, 12, 30)   => '2 months ago',
+          Time.new(2014, 6, 15, 12, 12, 30)   => '1 year ago',
+          Time.new(2013, 6, 15, 12, 12, 30)   => '2 years ago'
+        }.each do |time_now, response|
+          context "Time.now is #{time_now} and origin_time is #{origin_time}" do
+            it "returns #{response}" do
+              allow(Time).to receive(:now).and_return time_now
+              expect(
+                Timefly.new(origin_time).elapsed_time
+              ).to eq response
+            end
+          end
+        end
+      end
+      context 'format is sent in options' do
+        context '%u is used in format' do
+          {
+            Time.new(2015, 6, 15, 12, 12, 31)   => '1 s',
+            Time.new(2015, 6, 15, 12, 11, 30)   => '1 m',
+            Time.new(2015, 6, 15, 11, 12, 30)   => '1 h',
+            Time.new(2015, 6, 14, 12, 12, 30)   => '1 d',
+            Time.new(2015, 6, 8, 12, 12, 30)    => '1 w',
+            Time.new(2015, 5, 15, 12, 12, 30)   => '1 mo',
+            Time.new(2014, 6, 15, 12, 12, 30)   => '1 y'
+          }.each do |time_now, response|
+            context "Time.now is #{time_now} and origin_time is #{origin_time}" do
+              it "returns #{response}" do
+                allow(Time).to receive(:now).and_return time_now
+                expect(
+                  Timefly.new(origin_time).elapsed_time(format: '%n %u')
+                ).to eq response
+              end
+            end
+          end
+        end
+        context '%U is used in format' do
+          {
+            Time.new(2015, 6, 15, 12, 12, 31)   => '1 second',
+            Time.new(2015, 6, 15, 12, 12, 32)   => '2 seconds',
+            Time.new(2015, 6, 15, 12, 11, 30)   => '1 minute',
+            Time.new(2015, 6, 15, 12, 10, 30)   => '2 minutes',
+            Time.new(2015, 6, 15, 11, 12, 30)   => '1 hour',
+            Time.new(2015, 6, 15, 10, 12, 30)   => '2 hours',
+            Time.new(2015, 6, 14, 12, 12, 30)   => '1 day',
+            Time.new(2015, 6, 13, 12, 12, 30)   => '2 days',
+            Time.new(2015, 6, 9, 12, 12, 30)    => '6 days',
+            Time.new(2015, 6, 8, 12, 12, 30)    => '1 week',
+            Time.new(2015, 5, 17, 12, 12, 30)   => '4 weeks',
+            Time.new(2015, 5, 15, 12, 12, 30)   => '1 month',
+            Time.new(2015, 4, 15, 12, 12, 30)   => '2 months',
+            Time.new(2014, 6, 15, 12, 12, 30)   => '1 year',
+            Time.new(2013, 6, 15, 12, 12, 30)   => '2 years'
+          }.each do |time_now, response|
+            context "Time.now is #{time_now} and origin_time is #{origin_time}" do
+              it "returns #{response}" do
+                allow(Time).to receive(:now).and_return time_now
+                expect(
+                  Timefly.new(origin_time).elapsed_time(format: '%n %U')
+                ).to eq response
+              end
+            end
           end
         end
       end

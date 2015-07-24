@@ -53,19 +53,19 @@ class Timefly
   #   => '4 hours ago'
   def elapsed_time(options = {})
     if time_elapsed_in_seconds?
-      elapsed_time_in_seconds
+      elapsed_time_in_seconds(options)
     elsif time_elapsed_in_minutes?
-      elapsed_time_in_minutes
+      elapsed_time_in_minutes(options)
     elsif time_elapsed_in_hours?
-      elapsed_time_in_hours
+      elapsed_time_in_hours(options)
     elsif time_elapsed_in_days?
-      elapsed_time_in_days
+      elapsed_time_in_days(options)
     elsif time_elapsed_in_weeks?
-      elapsed_time_in_weeks
+      elapsed_time_in_weeks(options)
     elsif time_elapsed_in_months?
-      elapsed_time_in_months
+      elapsed_time_in_months(options)
     else
-      elapsed_time_in_years
+      elapsed_time_in_years(options)
     end
   end
 
